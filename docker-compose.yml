@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  eureka-server:
+    image: steeltoeoss/eureka-server
+    pull_policy: always
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    environment:
+      EUREKA_INSTANCE_PREFERIPADDRESS: "true"
+      EUREKA_INSTANCE_IPADDRESS: "host.docker.internal"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eureka-server:8761/eureka/"
+    restart: always
+
+  springboot-admin:
+    image: hananiel/spring-boot-admin-eureka-sample
+    pull_policy: always
+    container_name: springboot-admin
+    ports:
+      - "1111:1111"
+    environment:
+      SERVER_PORT: "1111"
+      EUREKA_SERVICE_URL: "http://eureka-server:8761"
+      SPRING_SECURITY_USER_NAME: "admin"
+      SPRING_SECURITY_USER_PASSWORD: "admin"
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "*"
+      EUREKA_INSTANCE_PREFERIPADDRESS: "true"
+      EUREKA_INSTANCE_IPADDRESS: "host.docker.internal"
+      EUREKA_CLIENT_FETCHREGISTRY: "true"
+      EUREKA_CLIENT_REGISTERWITHEUREKA: "true"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eureka-server:8761/eureka/"
+    depends_on:
+      - eureka-server
+    restart: always
