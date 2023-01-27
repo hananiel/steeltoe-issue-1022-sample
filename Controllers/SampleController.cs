@@ -13,9 +13,9 @@ namespace SampleService.Controllers
     {
         private readonly ILogger logger;
 
-        public SampleController(ILoggerFactory loggerFactory)
+        public SampleController(ILogger<SampleController> logger)
         {
-            this.logger = loggerFactory.CreateLogger<SampleController>();
+            this.logger = logger;
         }
 
         [HttpPost("echo")]

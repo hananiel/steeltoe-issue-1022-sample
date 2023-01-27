@@ -1,4 +1,4 @@
-﻿#define LOGGING_FIX
+﻿//#define LOGGING_FIX
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using SampleService.Logging;
 using Serilog;
 using Steeltoe.Bootstrap.Autoconfig;
+using Steeltoe.Extensions.Logging.DynamicSerilog;
+using Steeltoe.Management.Endpoint;
 using System;
 using System.Reflection;
 
@@ -53,7 +55,9 @@ namespace SampleService
 #else
             return builder
                 .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
-                .AddSteeltoe(loggerFactory: LoggerBuilder.CreateAutoconfigLoggerFactory());
+                .AddDynamicSerilog()
+              //  .AddSteeltoe(loggerFactory: LoggerBuilder.CreateAutoconfigLoggerFactory());
+              .AddAllActuators();
 #endif
         }
 
